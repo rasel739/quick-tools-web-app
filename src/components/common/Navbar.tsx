@@ -1,7 +1,7 @@
 const Navbar = () => {
   return (
     <>
-      <div className="navbar bg-base-100">
+      <div className="navbar bg-base-100 animate-in fade-in zoom-in">
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -50,7 +50,7 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-        <div className="navbar-end">
+        <div className=" navbar-end sm:visible invisible ">
           <a className="btn">New Future Coming Soon</a>
         </div>
       </div>

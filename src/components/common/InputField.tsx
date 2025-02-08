@@ -12,7 +12,7 @@ const InputField: React.FC<InputFieldType> = (props) => {
         type={type}
         placeholder={placeholder}
         onChange={handleChange}
-        className="input input-bordered input-accent w-full max-w-xs"
+        className="input input-bordered input-accent w-full max-w-xs "
       />
     </div>
   );
