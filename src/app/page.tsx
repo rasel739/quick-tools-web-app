@@ -1,101 +1,158 @@
-import Image from "next/image";
+"use client";
+import InputField from "@/components/common/InputField";
+import { FormEvent, useState } from "react";
 
-export default function Home() {
+const HomePage = () => {
+  type InputFormType = {
+    currency: string;
+    exchangeRate: string;
+    localMoney: string;
+  };
+
+  const initialState: InputFormType = {
+    currency: "",
+    exchangeRate: "",
+    localMoney: "",
+  };
+
+  const [formData, setFormData] = useState<InputFormType>(initialState);
+  const [exchangeAmount, setExchangeAmount] = useState("0");
+  const [error, setError] = useState<string | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setError(null); // Clear error on input change
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Trim input values to remove unnecessary spaces
+    const currency = formData.currency.trim();
+    const exchangeRate = formData.exchangeRate.trim();
+    const localMoney = formData.localMoney.trim();
+
+    if (!currency) {
+      setError("Foregin Currency field is required.");
+      setExchangeAmount("0");
+      return;
+    }
+
+    if (!exchangeRate) {
+      setError("Local Exchange Rate field is required.");
+      setExchangeAmount("0");
+      return;
+    }
+
+    if (!localMoney) {
+      setError("Insert Local Money Amount field is required.");
+      setExchangeAmount("0");
+      return;
+    }
+
+    setError(null);
+
+    setExchangeAmount(exchangeAmount || "0");
+
+    if (
+      isNaN(Number(currency)) ||
+      isNaN(Number(exchangeRate)) ||
+      isNaN(Number(localMoney))
+    ) {
+      setError(
+        "Please enter valid numeric values for Currency, Exchange Rate, and Local Money."
+      );
+      return;
+    }
+
+    // Convert inputs to numbers
+    const currencyValue = parseFloat(currency);
+    const exchangeRateValue = parseFloat(exchangeRate);
+    const localMoneyValue = parseFloat(localMoney);
+
+    // Prevent division by zero
+    if (
+      currencyValue === 0 ||
+      exchangeRateValue === 0 ||
+      localMoneyValue === 0
+    ) {
+      setError("Input field cannot be zero.");
+      return;
+    }
+
+    // Perform currency conversion
+    const convertedAmount = (
+      (currencyValue / exchangeRateValue) *
+      localMoneyValue
+    ).toFixed(3);
+    setExchangeAmount(convertedAmount);
+  };
+
+  const handleReset = () => {
+    setFormData(initialState);
+    setError(null);
+    setExchangeAmount("0");
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="m-20 p-5 rounded-box">
+      <form onSubmit={handleSubmit}>
+        <div>
+          <div className="flex justify-center items-center">
+            <h1 className="text-2xl font-bold text-accent sm:text-1xl">
+              BDT to Foreign Currency Converter
+            </h1>
+          </div>
+          <div className="py-4 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 flex justify-center flex-col items-center">
+            {error && (
+              <div className="text-red-500 text-sm bg-red-100 px-3 py-2 rounded">
+                {error}
+              </div>
+            )}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <InputField
+              name="currency"
+              type="text"
+              placeholder="Foreign Currency"
+              handleChange={handleChange}
             />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            <InputField
+              name="exchangeRate"
+              type="text"
+              placeholder="Local Exchange Rate"
+              handleChange={handleChange}
+            />
+            <InputField
+              name="localMoney"
+              type="text"
+              placeholder="Insert Local Money Amount"
+              handleChange={handleChange}
+            />
+
+            <div>
+              <h3>Converted Amount: {exchangeAmount}</h3>
+            </div>
+
+            <div className="flex justify-between items-center">
+              <button
+                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-accent mr-4"
+                type="submit"
+              >
+                Convert
+              </button>
+              <button
+                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-secondary"
+                type="reset"
+                onClick={handleReset}
+              >
+                Reset
+              </button>
+            </div>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </form>
     </div>
   );
-}
+};
+
+export default HomePage;
