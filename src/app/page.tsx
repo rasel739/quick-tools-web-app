@@ -100,7 +100,7 @@ const HomePage = () => {
         <div>
           <div className="flex justify-center items-center">
             <h1 className="text-2xl font-bold text-accent sm:text-1xl">
-              BDT to Foreign Currency Converter
+              BDT To Foreign Currency Converter
             </h1>
           </div>
           <div className="py-4 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 flex justify-center flex-col items-center">
@@ -110,27 +110,33 @@ const HomePage = () => {
               </div>
             )}
 
-            <InputField
-              name="currency"
-              type="text"
-              placeholder="Foreign Currency"
-              handleChange={handleChange}
-            />
-            <InputField
-              name="exchangeRate"
-              type="text"
-              placeholder="Local Exchange Rate"
-              handleChange={handleChange}
-            />
-            <InputField
-              name="localMoney"
-              type="text"
-              placeholder="Insert Local Money Amount"
-              handleChange={handleChange}
-            />
+            <div className="animate-out slide-out-to-top slide-out-to-left duration-1000">
+              <InputField
+                name="currency"
+                type="text"
+                placeholder="Foreign Currency"
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="animate-out slide-out-to-top slide-out-to-left duration-700">
+              <InputField
+                name="exchangeRate"
+                type="text"
+                placeholder="Local Exchange Rate"
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="animate-out slide-out-to-top slide-out-to-left duration-600">
+              <InputField
+                name="localMoney"
+                type="text"
+                placeholder="Insert Local Money Amount"
+                handleChange={handleChange}
+              />
+            </div>
 
             <div>
-              <h3>Converted Amount: {exchangeAmount}</h3>
+              <span>Converted Amount: {exchangeAmount}</span>
             </div>
 
             <div className="flex justify-between items-center">
