@@ -50,7 +50,7 @@ const HomePage = () => {
       return;
     }
 
-    setError(null);
+    setError("");
 
     setExchangeAmount(exchangeAmount || "0");
 
@@ -95,12 +95,12 @@ const HomePage = () => {
   };
 
   return (
-    <div className="m-20 p-5 rounded-box">
+    <div className="sm:m-20 sm:p-5 m-2 p-3 rounded-box bg-gray-200">
       <form onSubmit={handleSubmit}>
         <div>
           <div className="flex justify-center items-center">
-            <h1 className="text-2xl font-bold text-accent sm:text-1xl">
-              BDT To Foreign Currency Converter
+            <h1 className="font-bold text-accent text-1xl sm:text-2xl">
+              Foreign Currency Converter
             </h1>
           </div>
           <div className="py-4 text-base leading-6 space-y-4 text-gray-700 sm:text-lg sm:leading-7 flex justify-center flex-col items-center">
@@ -110,44 +110,46 @@ const HomePage = () => {
               </div>
             )}
 
-            <div className="animate-out slide-out-to-top slide-out-to-left duration-1000">
-              <InputField
-                name="currency"
-                type="text"
-                placeholder="Foreign Currency"
-                handleChange={handleChange}
-              />
-            </div>
-            <div className="animate-out slide-out-to-top slide-out-to-left duration-700">
-              <InputField
-                name="exchangeRate"
-                type="text"
-                placeholder="Local Exchange Rate"
-                handleChange={handleChange}
-              />
-            </div>
-            <div className="animate-out slide-out-to-top slide-out-to-left duration-600">
-              <InputField
-                name="localMoney"
-                type="text"
-                placeholder="Insert Local Money Amount"
-                handleChange={handleChange}
-              />
-            </div>
+            <InputField
+              name="currency"
+              type="text"
+              placeholder="Foreign Currency"
+              handleChange={handleChange}
+            />
+
+            <InputField
+              name="exchangeRate"
+              type="text"
+              placeholder="Local Exchange Rate"
+              handleChange={handleChange}
+            />
+
+            <InputField
+              name="localMoney"
+              type="text"
+              placeholder="Insert Local Money Amount"
+              handleChange={handleChange}
+            />
 
             <div>
-              <span>Converted Amount: {exchangeAmount}</span>
+              <span>
+                <span className="text-black font-bold">Converted Amount: </span>
+                <span className="text-green-800 font-bold">
+                  {exchangeAmount}
+                </span>
+              </span>
             </div>
 
             <div className="flex justify-between items-center">
               <button
-                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-accent mr-4"
+                className={`btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-success text-white mr-4`}
+                disabled={formData.localMoney === "" ? true : false}
                 type="submit"
               >
                 Convert
               </button>
               <button
-                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-secondary"
+                className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg text-white btn-error btn-outline"
                 type="reset"
                 onClick={handleReset}
               >
