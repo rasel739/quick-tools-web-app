@@ -5,16 +5,16 @@ const InputField: React.FC<InputFieldType> = (props) => {
   const { type, name, defaultValue, handleChange, placeholder } = props;
 
   return (
-    <div>
+    <>
       <input
         name={name}
         value={defaultValue}
         type={type}
         placeholder={placeholder}
         onChange={handleChange}
-        className="input input-bordered input-accent w-full max-w-xs "
+        className="input input-bordered input-accent w-full sm:w-1/2"
       />
-    </div>
+    </>
   );
 };
 
