@@ -12,6 +12,7 @@ const InputField: React.FC<InputFieldType> = (props) => {
         type={type}
         placeholder={placeholder}
         onChange={handleChange}
+        autoComplete="off"
         className="input input-bordered input-accent w-full sm:w-1/2"
       />
     </>
